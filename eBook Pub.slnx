@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ContentProcessingService/ContentProcessingService.csproj" />
+  <Project Path="EBookPlatform.Contracts/EBookPlatform.Contracts.csproj" />
+  <Project Path="Ingress/Ingress.csproj" />
+  <Project Path="PublishingService/PublishingService.csproj" />
+</Solution>

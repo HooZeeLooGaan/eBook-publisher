@@ -1,0 +1,16 @@
+# Build & Debug
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Visual studio
+.vs/
+
+# Local config
+appsettings.json
+appsettings.Development.json
+
+# NuGet packages
+**/packages/
+*.nupkg

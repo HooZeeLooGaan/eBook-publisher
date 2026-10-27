@@ -1,0 +1,43 @@
+services:
+  localstack:
+    image: localstack/localstack:3.3.0
+    container_name: localstack_aws
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs,sns
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  ingress.web:
+    build:
+      context: .
+      dockerfile: Ingress/Dockerfile
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AWS_ACCESS_KEY_ID=test
+      - ASPNETCORE_URLS=http://+:8080
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      - localstack
+
+  publishing.worker:
+    build:
+      context: .
+      dockerfile: PublishingService/Dockerfile
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      - localstack
